@@ -1,79 +1,55 @@
 @import "./variables.scss";
 @import "./breakpoints.scss";
 
-.register {
+.login {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  //background: url("../../public/assets/register.jpg") center;
-  background: url("https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2") center;
+  background: url("../../public/assets/login.jpg") center;
   background-size: cover;
 
   &_content {
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 15px;
     width: 40%;
-    padding: 60px;
+    padding: 40px;
     background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 50px;
+    border-radius: 20px;
 
     @include lg {
-      width: 60%;
+      width: 60%
     }
 
     @include mm {
-      width: 80%;
+      width: 80%
     }
 
     &_form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
 
       input {
         width: 100%;
-        font-size: larger;
-        font-weight: 500;
         padding: 7px 15px;
         background-color: transparent;
-
-        border: round($number: 3) white;
+        border: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        outline: invert;
+        outline: none;
         text-align: center;
-        color: #e5e4e2;
-
-        &:focus::placeholder {
-          color: transparent;
-          border-radius: 30px;
-        }
+        color: white;
 
         input:not(:placeholder-shown):focus {
-          background-color: #e5e4e2; /* or background: none; */
+          background: transparent; /* or background: none; */
         }
 
         &::placeholder {
-          color: #e5e4e2;
-        }
-      }
-
-      label {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 9px;
-        cursor: pointer;
-        color: white;
-        font-size: 14px;
-
-        img {
-          width: 25px;
+          color: white;
         }
       }
 
@@ -89,16 +65,29 @@
       }
     }
 
+    &_google {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
     a {
       text-decoration: none;
       color: white;
-      font-size: 15px;
-      margin-top: 10px;
+      font-size: 17px;
+      font-weight: 600;
       text-align: center;
 
       &:hover {
         text-decoration: underline;
       }
+    }
+
+    p {
+      color: white;
+      font-size: 13px;
+      text-align: center;
     }
   }
 }
