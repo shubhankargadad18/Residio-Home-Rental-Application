@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Register.scss";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterPage = () => {
@@ -13,7 +14,7 @@ const RegisterPage = () => {
     profileImage: null,
   });
 
-  const handlePage = (e) => {
+  const handleChange = (e) => {
     const { name, value, files } = e.target
     setFormData({
       ...formData,
@@ -22,17 +23,51 @@ const RegisterPage = () => {
       [name]: name === "profileImage" ? files[0] : value
     });
   }
+  //console.log(formData);
+
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+
+  useEffect(() => {
+    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "");
+  });
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+      const register_form = new FormData();
+      for (var key in formData) {
+        register_form.append(key, formData[key]);
+      }
+
+      const response = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        body: register_form
+      })
+
+      if (response.ok) {
+        navigate("/login");
+      }
+
+    } catch (err) {
+      console.log("Registration Failed", err.message);
+    }
+  }
 
   return (
     <div className="register">
       <div className="register_content">
-        <form className="register_content_form">
+        <form className="register_content_form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="First Name"
             name="firstname"
             value={formData.firstname}
-            onChange={setFormData}
+            onChange={handleChange}
             required
           />
           <input
@@ -40,7 +75,7 @@ const RegisterPage = () => {
             placeholder="Last Name"
             name="lastname"
             value={formData.lastname}
-            onChange={setFormData}
+            onChange={handleChange}
             required
           />
           <input
@@ -48,7 +83,7 @@ const RegisterPage = () => {
             placeholder="Email"
             name="email"
             value={formData.email}
-            onChange={setFormData}
+            onChange={handleChange}
             required
           />
           <input
@@ -56,23 +91,28 @@ const RegisterPage = () => {
             placeholder="Password"
             name="password"
             value={formData.password}
-            onChange={setFormData}
+            onChange={handleChange}
             required
           />
           <input
             type="password"
             placeholder="Confirm Password"
-            name="password"
+            name="confirmPassword"
             value={formData.confirmPassword}
-            onChange={setFormData}
+            onChange={handleChange}
             required
           />
+
+          {!passwordMatch && (
+            <p style={{color:"red"}}>Passwords do not match!!</p>
+          )}
+
           <input
             id="image"
             type="file"
             name="profileImage"
             accept="image/*"
-            onChange={setFormData}
+            onChange={handleChange}
             required
             style={{ display: "none" }}
           ></input>
@@ -87,7 +127,7 @@ const RegisterPage = () => {
               style={{maxWidth: "80px"}}
             />
           )}
-          <button type="submit" className="button">
+          <button type="submit" disabled={!passwordMatch}>
             REGISTER
           </button>
         </form>
